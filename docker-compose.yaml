@@ -25,7 +25,7 @@ services:
   app:
     build:
       dockerfile: Dockerfile
-    container_name: HomeWeatherStation
+    container_name: GarniWeatherServer
     ports:
       - "8080:8080"
     depends_on:
@@ -36,4 +36,4 @@ services:
 networks:
   default:
     external: true
-    name: homeweatherstation_default
+    name: garni_weather_network
