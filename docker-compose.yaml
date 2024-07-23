@@ -1,0 +1,41 @@
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: weather_data
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: mysql
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana-container
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: GarniWeatherServer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - grafana
+    volumes:
+      - ./src:/app/src
+
+networks:
+  default:
+    external: true
+    name: garni_weather_network
