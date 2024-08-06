@@ -1,9 +1,13 @@
+import socketserver
+
 from common.config_load import SERVER_IP, SERVER_PORT
-from socketDataGet.getSocketData import socket_data_receive
+from message_receive.http_get_message import message_handler
 
 
 def __main__():
-    socket_data_receive(SERVER_IP, SERVER_PORT)
+    with socketserver.TCPServer((SERVER_IP, SERVER_PORT), message_handler) as httpd:
+        print(f"Serving {SERVER_IP} on port {SERVER_PORT}")
+        httpd.serve_forever()
 
 
 if __name__ == "__main__":
