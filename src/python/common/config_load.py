@@ -29,6 +29,6 @@ class LoadEnvVars:
 
 LoadEnvVars('conf/env.conf')
 
-SERVER_IP = os.getenv('SERVER_IP')
-SERVER_PORT = int(os.getenv('SERVER_PORT'))
+LISTEN_SERVER_IP = os.getenv('LISTEN_SERVER_IP')
+LISTEN_SERVER_PORT = int(os.getenv('LISTEN_SERVER_PORT'))
 SLEEP_TIME_FOR_MYSQL_START_SECONDS = int(os.getenv('SLEEP_TIME_FOR_MYSQL_START_SECONDS'))
