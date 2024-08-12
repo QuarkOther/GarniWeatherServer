@@ -10,6 +10,8 @@ services:
     ports:
       - "3306:3306"
       - "33060:33060"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./mysql_data:/var/lib/mysql
 
