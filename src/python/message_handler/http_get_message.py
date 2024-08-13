@@ -1,4 +1,5 @@
 import http.server
+import time
 
 from data_processing.data_schema import DataSchema
 from data_processing.data_split import DataSplit
@@ -20,6 +21,7 @@ class MessageHandler(http.server.SimpleHTTPRequestHandler):
         data_insert_query = f"INSERT INTO weather_data ({schem.get_write_columns()}) VALUES ({schem.get_write_values()});"
         print(data_insert_query)
         db_writer.write_data(data_insert_query)
+        time.sleep(2)
         db_writer.close_connection()
 
     def get_received_data(self):

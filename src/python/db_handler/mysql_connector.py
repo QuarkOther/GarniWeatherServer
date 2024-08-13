@@ -91,7 +91,7 @@ class MySQLConnector:
         cursor = self.connection.cursor()
         try:
             cursor.execute(query, params)
-            result = cursor.fetchall()
+            result = cursor.fetchone()
             return result
         except Error as e:
             print(f"Error: {e}")
