@@ -82,3 +82,29 @@ class DataSchema:
         self.dailyrainin = self.dailyrainin * 25.4
         self.solarradiation = self.solarradiation * 0.2146
         self.indoortempf = (self.indoortempf - 32) * 5 / 9
+
+    def get_sql_columns(self):
+        # Mapping of Python types to SQL types
+        python_to_sql = {
+            int: "INTEGER",
+            float: "FLOAT",
+            str: "TEXT",
+            bool: "BOOLEAN",
+            bytes: "BLOB"
+        }
+
+        # List to hold the columns
+        columns = []
+
+        # Iterate over the attributes and get their types
+        for attr, value in self.__dict__.items():
+            sql_type = python_to_sql.get(type(value), "TEXT")  # Default to TEXT if type is unknown
+            columns.append(f"{attr} {sql_type}")
+
+        return str(columns).replace("'", '').replace('[', '').replace(']', '')
+
+    def get_write_columns(self):
+        return ', '.join(self.__dict__.keys())
+
+    def get_write_values(self):
+        return ', '.join([str(value) for value in self.__dict__.values()])

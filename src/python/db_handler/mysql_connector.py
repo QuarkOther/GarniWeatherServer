@@ -58,7 +58,8 @@ class MySQLConnector:
                 password=self.password
             )
             if self.connection.is_connected():
-                print("Connected to MySQL database")
+                # print("Connected to MySQL database")
+                pass
         except Error as e:
             print(f"Error: {e}")
             self.connection = None
