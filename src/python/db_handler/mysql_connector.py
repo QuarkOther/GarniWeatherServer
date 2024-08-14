@@ -88,16 +88,33 @@ class MySQLConnector:
         if self.connection is None:
             raise Error("Connection is not established")
 
-        cursor = self.connection.cursor()
+        cursor = self.cursor()
         try:
             cursor.execute(query, params)
-            result = cursor.fetchall()
+            result = cursor.fetchone()
             return result
         except Error as e:
             print(f"Error: {e}")
             return []
         finally:
             cursor.close()
+
+    def cursor(self):
+        """
+        Returns a cursor object for the MySQL connection.
+
+        Returns:
+        -------
+        mysql.connector.cursor_cext.CMySQLCursor
+            The cursor object.
+        """
+        return self.connection.cursor()
+
+    def commit(self):
+        """
+        Commits the current transaction to the MySQL database.
+        """
+        self.connection.commit()
 
     def close(self):
         """

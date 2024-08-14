@@ -9,10 +9,10 @@ class DbWriter:
 
     def __init__(self):
         self.connection = MySQLConnector(host=LISTEN_SERVER_IP, database='weather_data', user='admin', password='mysql')
-        self.connection.connect()
+        self.connected = self.connection.connect()
         print(f"Connected to MySQL database on {LISTEN_SERVER_IP}:{LISTEN_SERVER_PORT}")
 
-    def check_if_table_exists(self, table_name, create_table_query):
+    def check_if_table_exists(self, table_name):
         tables_result = self.connection.execute_query(f"SHOW TABLES;")
         if tables_result.__sizeof__() > 0:
             for table in tables_result:
@@ -23,7 +23,7 @@ class DbWriter:
 
 
     def create_table(self, table_name, create_table_query):
-        table_exists = self.check_if_table_exists(table_name, create_table_query)
+        table_exists = self.check_if_table_exists(table_name)
         if not table_exists:
             result = self.connection.execute_query(create_table_query)
             print(f"create table query: {create_table_query}\nresult: ")
@@ -39,7 +39,10 @@ class DbWriter:
 
 
     def write_data(self, insert_query):
-        self.connection.execute_query(insert_query)
+        cursor = self.connection.cursor()
+        cursor.execute(insert_query)
+        return self.connection.commit()
+
 
     def close_connection(self):
         self.connection.close()

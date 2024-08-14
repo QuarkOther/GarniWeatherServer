@@ -1,3 +1,6 @@
+from future.backports.datetime import datetime
+
+
 class DataSchema:
     """
     A class to represent the schema of weather station data and convert it to metric units.
@@ -6,6 +9,18 @@ class DataSchema:
     ----------
     weather_station_id : str
         The ID of the weather station.
+    password : str
+        The password of the weather station.
+    action : str
+        The action of the weather station.
+    realtime : str
+        The real time of the weather station.
+    rtfreq : str
+        The real time frequency of the weather station.
+    dateutc : datetime
+        The date and time in Coordinated Universal Time (UTC).
+    datelocal : datetime
+        The date and time in local time.
     baromin : float
         The barometric pressure in inches of mercury.
     tempf : float
@@ -33,6 +48,7 @@ class DataSchema:
     indoorhumidity : int
         The indoor humidity percentage.
     """
+
     def __init__(self, input_data_dict):
         """
         Constructs all the necessary attributes for the DataSchema object.
@@ -43,6 +59,12 @@ class DataSchema:
             A dictionary containing the weather station data.
         """
         self.weather_station_id = input_data_dict['/weatherstation/updateweatherstation.php?ID']
+        self.password = input_data_dict['PASSWORD']
+        self.action = input_data_dict['action']
+        self.realtime = input_data_dict['realtime']
+        self.rtfreq = input_data_dict['rtfreq']
+        self.dateutc = datetime.utcnow()
+        self.datelocal = datetime.now()
         self.baromin = float(input_data_dict['baromin'])
         self.tempf = float(input_data_dict['tempf'])
         self.dewptf = float(input_data_dict['dewptf'])
@@ -73,6 +95,11 @@ class DataSchema:
         """
         Converts the imperial units to metric units.
         """
+        self.dateutc = str('"' + self.dateutc.strftime("%Y-%m-%d %H:%M:%S")+ '"')
+        self.datelocal = str('"' +self.datelocal.strftime("%Y-%m-%d %H:%M:%S")+ '"')
+        if self.password == '':
+            self.password = "password"
+        self.action = str('"' + self.action + '"')
         self.baromin = self.baromin * 33.863
         self.tempf = (self.tempf - 32) * 5 / 9
         self.dewptf = (self.dewptf - 32) * 5 / 9
