@@ -41,7 +41,7 @@ class DbWriter:
     def write_data(self, insert_query):
         cursor = self.connection.cursor()
         cursor.execute(insert_query)
-        return self.connected.commit()
+        return self.connection.commit()
 
 
     def close_connection(self):
