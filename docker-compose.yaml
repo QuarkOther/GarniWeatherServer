@@ -26,10 +26,10 @@ services:
 
   app:
     build:
-      context: .
       dockerfile: Dockerfile
-    container_name: GarniWeatherServer
+    container_name: garni_weather_server-container
     ports:
+      - "80:80"
       - "8080:8080"
     depends_on:
       - mysql
